@@ -3,7 +3,7 @@ import expressJwt from "express-jwt";
 import AuthRoutes from "./authRoutes";
 import UserRoutes from "./userRoutes";
 import key from "../config/key";
-import { unAuthorizedRequest } from "../utils/commonResponse";
+import errorMiddleware from "./middlewares/errorMiddleware";
 
 const routes = router => {
   router.use(
@@ -11,12 +11,7 @@ const routes = router => {
       path: ["/api/authenticate"]
     })
   );
-
-  router.use(function(err, req, res, next) {
-    if (err.name === "UnauthorizedError") {
-      unAuthorizedRequest(res, { message: "Invalid token." });
-    }
-  });
+  router.use(errorMiddleware.unAuthorizedError);
 
   AuthRoutes(router);
   UserRoutes(router);

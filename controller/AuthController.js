@@ -14,7 +14,13 @@ const authenticate = async (req, res) => {
       return response.notFoundError(res, { message: "User not found." });
     } else {
       if (user.comparePassword(password)) {
-        const token = jwt.sign({ userId: user.id }, key.secretKey);
+        const payload = {
+          userId: user.id,
+          email: user.email,
+          role: user.role,
+          permissions: [user.role]
+        };
+        const token = jwt.sign(payload, key.secretKey);
 
         return response.successResponse(res, {
           user: { id: user.id, email: user.email, role: user.role },
