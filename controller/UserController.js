@@ -44,4 +44,19 @@ const getUsers = async (req, res) => {
   }
 };
 
-export default { postUser, getUsers };
+const getUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await UserModel.findById(userId);
+
+    return response.successResponse(res, user);
+  } catch (error) {
+    console.log(error);
+    return response.serverErrorResponse(res, {
+      message: "Error in getting user."
+    });
+  }
+};
+
+export default { postUser, getUsers, getUser };
