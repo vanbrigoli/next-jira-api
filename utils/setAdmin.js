@@ -2,10 +2,11 @@ import UserModel from "../model/UserModel";
 
 const setAdmin = () => {
   UserModel.findOne({ role: "admin" }, function(err, user) {
-    // if there are any errors, return the error before anything else
-    if (err) console.error("Error", err);
+    if (err) {
+      console.error("Error: ", err);
+      return;
+    }
 
-    // if no user is found
     if (!user) {
       const adminUser = new UserModel();
 

@@ -1,7 +1,6 @@
 import http from "http";
 import mongoose from "mongoose";
 import express from "express";
-import bodyParser from "body-parser";
 import setAdmin from "./utils/setAdmin";
 
 /**
@@ -28,8 +27,8 @@ const app = express();
 const router = express.Router();
 
 // Setup body parser
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 routes(router);
 
