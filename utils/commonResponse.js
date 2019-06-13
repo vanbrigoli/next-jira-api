@@ -1,5 +1,5 @@
 const customResponse = (res, status, message) => {
-  return res.status(status).json({ message });
+  return res.status(status).json(message);
 };
 
 export const successResponse = (res, message) => {

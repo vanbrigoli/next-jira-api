@@ -6,7 +6,9 @@ const postUser = (req, res) => {
 
   UserModel.findOne({ email }, function(err, user) {
     if (err) {
-      return response.serverErrorResponse(res, "Error in finding user.");
+      return response.serverErrorResponse(res, {
+        message: "Error in finding user."
+      });
     }
 
     if (!user) {
@@ -18,11 +20,15 @@ const postUser = (req, res) => {
 
       user.save(function(err) {
         if (err)
-          return response.serverErrorResponse(res, "Error in saving user.");
+          return response.serverErrorResponse(res, {
+            message: "Error in saving user."
+          });
 
-        return response.createdResponse(res, "Successfully created user.");
+        return response.createdResponse(res, {
+          message: "Successfully created user."
+        });
       });
-    } else return response.badRequest(res, "User already exist.");
+    } else return response.badRequest(res, { message: "User already exist." });
   });
 };
 
