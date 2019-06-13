@@ -1,11 +1,11 @@
-const http = require("http");
-var mongoose = require("mongoose");
-const express = require("express");
+import http from "http";
+import mongoose from "mongoose";
+import express from "express";
 
 /**
  * Connect to mongoDB
  */
-const configDB = require("./config/db");
+import configDB from "./config/db";
 mongoose.connect(process.env.MONGODB_URI || configDB.url, {
   useNewUrlParser: true
 });
@@ -13,9 +13,15 @@ mongoose.connect(process.env.MONGODB_URI || configDB.url, {
 /**
  * API routes
  */
+import routes from "./routes";
 const app = express();
+const router = express.Router();
+
+routes(router);
+
+app.use("/api", router);
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello from Custom JIRA!");
 });
 
 /**

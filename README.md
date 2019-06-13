@@ -1,1 +1,1 @@
-# next-jira-api
+# Custom JIRA API
