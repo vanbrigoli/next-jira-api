@@ -4,14 +4,11 @@ import UserModel from "../model/UserModel";
 import key from "../config/key";
 import * as response from "../utils/commonResponse";
 
-const authenticate = (req, res) => {
+const authenticate = async (req, res) => {
   const { email, password } = req.body;
-  UserModel.findOne({ email }, function(err, user) {
-    if (err) {
-      return response.serverErrorResponse(res, {
-        message: "Error in finding user."
-      });
-    }
+
+  try {
+    const user = await UserModel.findOne({ email });
 
     if (!user) {
       return response.notFoundError(res, { message: "User not found." });
@@ -26,7 +23,11 @@ const authenticate = (req, res) => {
       } else
         return response.badRequest(res, { message: "Invalid email/password." });
     }
-  });
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in finding user."
+    });
+  }
 };
 
 export default { authenticate };

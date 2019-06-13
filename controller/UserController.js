@@ -1,15 +1,11 @@
 import UserModel from "../model/UserModel";
 import * as response from "../utils/commonResponse";
 
-const postUser = (req, res) => {
+const postUser = async (req, res) => {
   const { email, password, role } = req.body;
 
-  UserModel.findOne({ email }, function(err, user) {
-    if (err) {
-      return response.serverErrorResponse(res, {
-        message: "Error in finding user."
-      });
-    }
+  try {
+    const user = await UserModel.findOne({ email });
 
     if (!user) {
       const user = new UserModel();
@@ -29,7 +25,23 @@ const postUser = (req, res) => {
         });
       });
     } else return response.badRequest(res, { message: "User already exist." });
-  });
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in finding user."
+    });
+  }
 };
 
-export default { postUser };
+const getUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find({ role: { $ne: "admin" } });
+
+    return response.successResponse(res, { users });
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in getting users."
+    });
+  }
+};
+
+export default { postUser, getUsers };
