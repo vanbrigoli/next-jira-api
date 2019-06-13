@@ -1,6 +1,8 @@
 import http from "http";
 import mongoose from "mongoose";
 import express from "express";
+import cors from "cors";
+
 import setAdmin from "./utils/setAdmin";
 
 /**
@@ -25,6 +27,8 @@ mongoose
 import routes from "./routes";
 const app = express();
 const router = express.Router();
+// Setup cors
+app.use(cors());
 
 // Setup body parser
 app.use(express.json());
