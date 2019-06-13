@@ -20,9 +20,7 @@ const authenticate = (req, res) => {
         const token = jwt.sign({ userId: user.id }, key.secretKey);
 
         return response.successResponse(res, {
-          id: user.id,
-          email: user.email,
-          role: user.role,
+          user: { id: user.id, email: user.email, role: user.role },
           accessToken: token
         });
       } else
