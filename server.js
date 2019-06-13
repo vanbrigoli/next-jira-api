@@ -1,14 +1,24 @@
 import http from "http";
 import mongoose from "mongoose";
 import express from "express";
+import bodyParser from "body-parser";
+import setAdmin from "./utils/setAdmin";
 
 /**
  * Connect to mongoDB
  */
 import configDB from "./config/db";
-mongoose.connect(process.env.MONGODB_URI || configDB.url, {
-  useNewUrlParser: true
-});
+mongoose
+  .connect(process.env.MONGODB_URI || configDB.url, {
+    useNewUrlParser: true
+  })
+  .then(() => {
+    console.log("Successfully connected to DB.");
+    setAdmin();
+  })
+  .catch(error => {
+    console.error("Connection error.");
+  });
 
 /**
  * API routes
@@ -16,6 +26,10 @@ mongoose.connect(process.env.MONGODB_URI || configDB.url, {
 import routes from "./routes";
 const app = express();
 const router = express.Router();
+
+// Setup body parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 routes(router);
 
