@@ -1,7 +1,19 @@
 const http = require("http");
+var mongoose = require("mongoose");
 const express = require("express");
-const app = express();
 
+/**
+ * Connect to mongoDB
+ */
+const configDB = require("./config/db");
+mongoose.connect(process.env.MONGODB_URI || configDB.url, {
+  useNewUrlParser: true
+});
+
+/**
+ * API routes
+ */
+const app = express();
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
