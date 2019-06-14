@@ -9,8 +9,9 @@ const setAdmin = () => {
 
     if (!user) {
       const adminUser = new UserModel();
+      const adminPassword = process.env.ADMIN_PASSWORD || "admin";
 
-      adminUser.password = adminUser.generateHash("admin");
+      adminUser.password = adminUser.generateHash(adminPassword);
       adminUser.email = "admin@admin.com";
       adminUser.role = "admin";
 
