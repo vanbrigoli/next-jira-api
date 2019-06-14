@@ -20,8 +20,19 @@ const setAdmin = () => {
 
         return;
       });
+    } else {
+      if (!user.comparePassword(appConfig.adminPassword)) {
+        user.updateOne(
+          { password: user.generateHash(appConfig.adminPassword) },
+          function(err) {
+            if (err) throw err;
+
+            return;
+          }
+        );
+        return;
+      }
     }
-    return;
   });
 };
 
