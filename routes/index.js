@@ -2,12 +2,12 @@ import expressJwt from "express-jwt";
 
 import AuthRoutes from "./authRoutes";
 import UserRoutes from "./userRoutes";
-import key from "../config/key";
+import appConfig from "../config/app";
 import errorMiddleware from "./middlewares/errorMiddleware";
 
 const routes = router => {
   router.use(
-    expressJwt({ secret: key.secretKey }).unless({
+    expressJwt({ secret: appConfig.secretKey }).unless({
       path: ["/api/authenticate"]
     })
   );

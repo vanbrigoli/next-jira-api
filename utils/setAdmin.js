@@ -1,4 +1,5 @@
 import UserModel from "../model/UserModel";
+import appConfig from "../config/app";
 
 const setAdmin = () => {
   UserModel.findOne({ role: "admin" }, function(err, user) {
@@ -9,9 +10,8 @@ const setAdmin = () => {
 
     if (!user) {
       const adminUser = new UserModel();
-      const adminPassword = process.env.ADMIN_PASSWORD || "admin";
 
-      adminUser.password = adminUser.generateHash(adminPassword);
+      adminUser.password = adminUser.generateHash(appConfig.adminPassword);
       adminUser.email = "admin@admin.com";
       adminUser.role = "admin";
 

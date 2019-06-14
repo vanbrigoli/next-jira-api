@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import UserModel from "../model/UserModel";
-import key from "../config/key";
+import appConfig from "../config/app";
 import * as response from "../utils/commonResponse";
 
 const authenticate = async (req, res) => {
@@ -20,7 +20,7 @@ const authenticate = async (req, res) => {
           role: user.role,
           permissions: [user.role]
         };
-        const token = jwt.sign(payload, key.secretKey);
+        const token = jwt.sign(payload, appConfig.secretKey);
 
         return response.successResponse(res, {
           user: { id: user.id, email: user.email, role: user.role },
