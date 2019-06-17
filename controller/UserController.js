@@ -34,7 +34,10 @@ const postUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await UserModel.find({ role: { $ne: "admin" } });
+    const users = await UserModel.find(
+      { role: { $ne: "admin" } },
+      "email role"
+    );
 
     return response.successResponse(res, { users });
   } catch (error) {
@@ -48,7 +51,7 @@ const getUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await UserModel.findById(userId);
+    const user = await UserModel.findById(userId, "email role");
 
     return response.successResponse(res, user);
   } catch (error) {
