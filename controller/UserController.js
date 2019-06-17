@@ -20,9 +20,7 @@ const postUser = async (req, res) => {
             message: "Error in saving user."
           });
 
-        return response.createdResponse(res, {
-          message: "Successfully created user."
-        });
+        return response.createdResponse(res, user);
       });
     } else return response.badRequest(res, { message: "User already exist." });
   } catch (error) {
