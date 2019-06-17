@@ -55,11 +55,26 @@ const getUser = async (req, res) => {
 
     return response.successResponse(res, user);
   } catch (error) {
-    console.log(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting user."
     });
   }
 };
 
-export default { postUser, getUsers, getUser };
+const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    await UserModel.findByIdAndDelete(userId);
+
+    return response.successResponse(res, {
+      message: "Successfully deleted user."
+    });
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in deleting user."
+    });
+  }
+};
+
+export default { postUser, getUsers, getUser, deleteUser };
