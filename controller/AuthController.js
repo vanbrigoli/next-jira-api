@@ -15,15 +15,18 @@ const authenticate = async (req, res) => {
     } else {
       if (user.comparePassword(password)) {
         const payload = {
-          userId: user.id,
+          userId: user._id,
           email: user.email,
           role: user.role,
           permissions: [user.role]
         };
         const token = jwt.sign(payload, appConfig.secretKey);
 
+        const userObj = user.toJSON();
+        delete userObj["password"];
+
         return response.successResponse(res, {
-          user: { id: user.id, email: user.email, role: user.role },
+          user: userObj,
           accessToken: token
         });
       } else

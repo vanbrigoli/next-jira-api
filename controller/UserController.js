@@ -87,10 +87,7 @@ const patchUser = async (req, res) => {
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(userId, req.body, {
       new: true,
-      select:
-        req.user.role === "admin"
-          ? "email role"
-          : "firstName lastName image email position"
+      select: "firstName lastName image email position role"
     });
 
     return response.successResponse(res, updatedUser);
