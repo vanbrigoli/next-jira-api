@@ -1,6 +1,8 @@
 import UserModel from "../model/UserModel";
 import * as response from "../utils/commonResponse";
 
+const PROJECTION = "email role firstName lastName position image";
+
 const postUser = async (req, res) => {
   const { email, password, role } = req.body;
 
@@ -20,7 +22,10 @@ const postUser = async (req, res) => {
             message: "Error in saving user."
           });
 
-        return response.createdResponse(res, user);
+        let userObj = user.toJSON();
+        delete userObj["password"];
+
+        return response.createdResponse(res, userObj);
       });
     } else return response.badRequest(res, { message: "User already exist." });
   } catch (error) {
@@ -32,10 +37,7 @@ const postUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await UserModel.find(
-      { role: { $ne: "admin" } },
-      "email role"
-    );
+    const users = await UserModel.find({ role: { $ne: "admin" } }, PROJECTION);
 
     return response.successResponse(res, { users });
   } catch (error) {
@@ -49,7 +51,7 @@ const getUser = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await UserModel.findById(userId, "email role");
+    const user = await UserModel.findById(userId, PROJECTION);
 
     return response.successResponse(res, user);
   } catch (error) {
@@ -87,7 +89,7 @@ const patchUser = async (req, res) => {
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(userId, req.body, {
       new: true,
-      select: "firstName lastName image email position role"
+      select: PROJECTION
     });
 
     return response.successResponse(res, updatedUser);
