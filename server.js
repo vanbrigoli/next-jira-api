@@ -11,7 +11,8 @@ import setAdmin from "./utils/setAdmin";
 import configDB from "./config/db";
 mongoose
   .connect(process.env.MONGODB_URI || configDB.url, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useFindAndModify: false
   })
   .then(() => {
     console.log("Successfully connected to DB.");
