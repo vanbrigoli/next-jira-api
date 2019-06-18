@@ -4,9 +4,14 @@ import bcrypt from "bcrypt";
 
 // define the schema for our user model
 const userSchema = mongoose.Schema({
-  email: String,
-  password: String,
-  role: String
+  firstName: String,
+  lastName: String,
+  position: String,
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  role: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
 // methods
