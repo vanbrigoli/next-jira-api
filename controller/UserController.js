@@ -75,4 +75,27 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { postUser, getUsers, getUser, deleteUser };
+const patchUser = async (req, res) => {
+  const { userId } = req.params;
+
+  if (req.body && "role" in req.body) {
+    if (req.user.role !== "admin")
+      return response.unAuthorizedRequest(res, {
+        message: "Unauthorized to update user role."
+      });
+  }
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(userId, req.body, {
+      new: true,
+      select: "email role"
+    });
+
+    return response.successResponse(res, updatedUser);
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in updating user."
+    });
+  }
+};
+
+export default { postUser, getUsers, getUser, deleteUser, patchUser };

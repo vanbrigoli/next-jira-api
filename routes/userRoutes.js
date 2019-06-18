@@ -10,6 +10,7 @@ const UserRoutes = router => {
     Guard().check("admin"),
     UserController.deleteUser
   );
+  router.patch("/users/:userId", UserController.patchUser);
 
   router.get("/users", UserController.getUsers);
   router.post("/users", Guard().check("admin"), UserController.postUser);
