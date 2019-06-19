@@ -12,7 +12,7 @@ const postUser = async (req, res) => {
     if (!user) {
       const user = new UserModel();
 
-      user.password = user.generateHash(password);
+      user.password = password;
       user.email = email;
       user.role = role;
 

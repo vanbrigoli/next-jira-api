@@ -15,6 +15,14 @@ const userSchema = mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+//middleware
+userSchema.pre("save", function(next) {
+  let user = this;
+
+  user.password = user.generateHash(user.password);
+  next();
+});
+
 // methods
 // generating a hash
 userSchema.methods.generateHash = function(password) {

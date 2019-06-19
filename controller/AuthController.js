@@ -39,4 +39,40 @@ const authenticate = async (req, res) => {
   }
 };
 
-export default { authenticate };
+const changePassword = async (req, res) => {
+  const {
+    action,
+    value: { email, password }
+  } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email });
+    if (user && action === "passwordChange") {
+      if (user.comparePassword(password))
+        return response.badRequest(res, {
+          message: "Old and new password must be different."
+        });
+      else {
+        user.password = password;
+        user.save(err => {
+          if (err)
+            return response.serverErrorResponse(res, {
+              message: "Error in updating password."
+            });
+
+          return response.successResponse(res, {
+            message: "Successfully updated password."
+          });
+        });
+      }
+    } else {
+      return response.badRequest(res, { message: "User not found." });
+    }
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in changing password."
+    });
+  }
+};
+
+export default { authenticate, changePassword };
