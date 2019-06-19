@@ -40,17 +40,21 @@ const authenticate = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, newPassword, oldPassword } = req.body;
 
   try {
     const user = await UserModel.findOne({ email });
     if (user) {
-      if (user.comparePassword(password))
+      if (!user.comparePassword(oldPassword)) {
+        return response.badRequest(res, { message: "Incorrect password." });
+      }
+
+      if (user.comparePassword(newPassword))
         return response.badRequest(res, {
           message: "Old and new password must be different."
         });
       else {
-        user.password = password;
+        user.password = newPassword;
         user.save(err => {
           if (err)
             return response.serverErrorResponse(res, {
