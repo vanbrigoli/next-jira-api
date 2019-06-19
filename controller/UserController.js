@@ -3,10 +3,13 @@ import Mailer from "../services/emailService";
 import appConfig from "../config/app";
 import * as response from "../utils/commonResponse";
 
-const emailer = new Mailer("gmail", {
-  user: appConfig.mailerUser,
-  pass: appConfig.mailerPass
-});
+const emailer = new Mailer(
+  { host: "smtp.mailtrap.io", port: 2525 },
+  {
+    user: appConfig.mailerUser,
+    pass: appConfig.mailerPass
+  }
+);
 
 const PROJECTION = "email role firstName lastName position image";
 
@@ -31,17 +34,15 @@ const postUser = async (req, res) => {
 
         let userObj = user.toJSON();
         delete userObj["password"];
-        
-        /** 
-         * const mailOptions = {
-          from: "sender@email.com",
+
+        const mailOptions = {
+          from: '"Custom JIRA Team"<custom-jira@custom.com>',
           to: user.email,
           subject: "Custom JIRA Account",
           html: "<p>Sample email</p>"
         };
 
         emailer.sendMail(mailOptions);
-        */
 
         return response.createdResponse(res, userObj);
       });

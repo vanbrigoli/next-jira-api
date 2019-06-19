@@ -16,7 +16,8 @@ class Mailer {
 
   createTransporter() {
     return nodemailer.createTransport({
-      service: this.service,
+      host: this.service.host,
+      port: this.service.port,
       auth: this.auth
     });
   }
