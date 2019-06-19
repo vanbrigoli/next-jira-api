@@ -1,5 +1,12 @@
 import UserModel from "../model/UserModel";
+import Mailer from "../services/emailService";
+import appConfig from "../config/app";
 import * as response from "../utils/commonResponse";
+
+const emailer = new Mailer("gmail", {
+  user: appConfig.mailerUser,
+  pass: appConfig.mailerPass
+});
 
 const PROJECTION = "email role firstName lastName position image";
 
@@ -24,6 +31,17 @@ const postUser = async (req, res) => {
 
         let userObj = user.toJSON();
         delete userObj["password"];
+        
+        /** 
+         * const mailOptions = {
+          from: "sender@email.com",
+          to: user.email,
+          subject: "Custom JIRA Account",
+          html: "<p>Sample email</p>"
+        };
+
+        emailer.sendMail(mailOptions);
+        */
 
         return response.createdResponse(res, userObj);
       });
