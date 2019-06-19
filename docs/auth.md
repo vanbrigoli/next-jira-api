@@ -25,12 +25,12 @@ API for login of users.
 ```json
 {
   "user": {
-    "_id": ObjectId("5d01e75d8c3cd75188ec7348"),
+    "_id": "5d01e75d8c3cd75188ec7348",
     "email": "admin@admin.com",
     "role": "admin",
     "__v": 0,
-    "createdAt": ISODate("2019-06-19T02:19:21.841Z"),
-    "updatedAt": ISODate("2019-06-19T02:19:21.841Z")
+    "createdAt": "2019-06-19T02:19:21.841Z",
+    "updatedAt": "2019-06-19T02:19:21.841Z"
   },
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDAxZTc1ZDhjM2NkNzUxODhlYzczNDgiLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbImFkbWluIl0sImlhdCI6MTU2MDkxMjIyMH0.BKPTAqKj0AVAZFFjWSoZBzQNfYmi2g0XFkpdbbuoo6k"
 }

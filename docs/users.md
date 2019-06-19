@@ -87,7 +87,7 @@ Creates new entry
 
 ```json
 {
-  "_id": ObjectId("5d01e75d8c3cd75188ec7348"),
+  "_id": "5d01e75d8c3cd75188ec7348",
   "email": "admin@admin.com",
   "role": "admin"
 }
@@ -99,11 +99,18 @@ Creates new entry
 
 **PATCH /users/:id**
 
+##### Fields (optional)
+
+- **firstName** - first name of the user
+- **lastName** - last name of the user
+- **position** - position of the user
+- **image** - base 64 image of the user
+
 ```json
 {
-  "firstName": "first name",
-  "lastName": "last name",
-  "position": "position of the user",
+  "firstName": "Sample",
+  "lastName": "Sample",
+  "position": "Tester",
   "image": "base 64 image"
 }
 ```
