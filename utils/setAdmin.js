@@ -11,7 +11,7 @@ const setAdmin = () => {
     if (!user) {
       const adminUser = new UserModel();
 
-      adminUser.password = adminUser.generateHash(appConfig.adminPassword);
+      adminUser.password = appConfig.adminPassword;
       adminUser.email = "admin@admin.com";
       adminUser.role = "admin";
 
