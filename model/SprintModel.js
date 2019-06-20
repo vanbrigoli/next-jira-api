@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-import { projectSchema } from "./ProjectModel";
 
 export const sprintSchema = mongoose.Schema({
   name: String,
   description: String,
-  project: projectSchema,
+  project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
-import { userSchema } from "./UserModel";
-import { sprintSchema } from "./SprintModel";
 
 const ticketSchema = mongoose.Schema({
   description: String,
-  sprint: sprintSchema,
+  sprint: { type: mongoose.Schema.Types.ObjectId, ref: "Sprint" },
   title: String,
-  assignedTo: userSchema,
+  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   type: { type: String, enum: ["TASK", "DEFECT", "BUG", "TECH DEBT"] },
   status: { type: String, enum: ["PENDING", "ONGOING", "COMPLETE"] },
   createdAt: { type: Date, default: Date.now },

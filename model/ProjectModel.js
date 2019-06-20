@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-import { userSchema } from "./UserModel";
 
 export const projectSchema = mongoose.Schema({
   name: { type: String, unique: true },
   description: String,
-  assignees: [userSchema],
+  assignees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

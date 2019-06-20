@@ -1,5 +1,4 @@
 import * as response from "../utils/commonResponse";
-import UserModel from "../model/UserModel";
 import ProjectModel from "../model/ProjectModel";
 
 const USER_PROJECTION =
@@ -9,17 +8,14 @@ const postProject = (req, res) => {
   const { name, description, assignees } = req.body;
 
   try {
-    const mappedAssignees = assignees.map(async userId => {
-      return await UserModel.findById(userId, USER_PROJECTION);
-    });
-
     const project = new ProjectModel();
     project.name = name;
     project.description = description;
-    project.assignees = mappedAssignees;
+    project.assignees = assignees;
 
     project.save(function(err) {
       if (err) {
+        console.error(err);
         if (err.code && err.code === 11000)
           return response.badRequest(res, {
             message: "Project already exist."
@@ -38,4 +34,19 @@ const postProject = (req, res) => {
   }
 };
 
-export default { postProject };
+const getProjects = async (req, res) => {
+  try {
+    const projects = await ProjectModel.find({}).populate(
+      "assignees",
+      USER_PROJECTION
+    );
+
+    return response.successResponse(res, projects);
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in getting projects."
+    });
+  }
+};
+
+export default { postProject, getProjects };
