@@ -13,7 +13,8 @@ const emailer = new Mailer({
   pass: appConfig.mailerPass
 });
 
-const PROJECTION = "email role firstName lastName position image";
+const PROJECTION =
+  "email role firstName lastName position image createdAt updatedAt";
 
 const postUser = async (req, res) => {
   const { email, password, role } = req.body;
