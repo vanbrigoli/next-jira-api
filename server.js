@@ -12,7 +12,8 @@ import configDB from "./config/db";
 mongoose
   .connect(process.env.MONGODB_URI || configDB.url, {
     useNewUrlParser: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useCreateIndex: true
   })
   .then(() => {
     console.log("Successfully connected to DB.");

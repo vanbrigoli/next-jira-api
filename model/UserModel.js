@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 // define the schema for our user model
-const userSchema = mongoose.Schema({
+export const userSchema = mongoose.Schema({
   firstName: String,
   lastName: String,
   position: String,
   image: String,
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },

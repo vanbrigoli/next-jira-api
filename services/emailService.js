@@ -1,9 +1,8 @@
 import nodemailer from "nodemailer";
 
 class Mailer {
-  constructor(service, auth) {
-    this.service = service;
-    this.auth = auth;
+  constructor(config) {
+    this.config = config;
   }
 
   sendMail(options) {
@@ -16,9 +15,12 @@ class Mailer {
 
   createTransporter() {
     return nodemailer.createTransport({
-      host: this.service.host,
-      port: this.service.port,
-      auth: this.auth
+      host: this.config.host,
+      port: this.config.port,
+      auth: {
+        user: this.config.user,
+        pass: this.config.pass
+      }
     });
   }
 }
