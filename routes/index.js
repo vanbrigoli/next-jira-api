@@ -12,9 +12,7 @@ const routes = router => {
   UserRoutes(router);
   ProjectRoutes(router);
 
-  router.route("/").get((req, res) => {
-    res.send("Welcome to Custom JIRA API!");
-  });
+  router.use(errorMiddleware.forbiddenError);
 };
 
 export default routes;

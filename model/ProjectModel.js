@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { userSchema } from "./UserModel";
 
 export const projectSchema = mongoose.Schema({
-  name: String,
+  name: { type: String, unique: true },
   description: String,
   assignees: [userSchema],
   createdAt: { type: Date, default: Date.now },
