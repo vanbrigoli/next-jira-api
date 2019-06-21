@@ -53,7 +53,8 @@ const patchProject = async (req, res) => {
   try {
     const updatedProject = await ProjectModel.findByIdAndUpdate(
       projectId,
-      req.body
+      req.body,
+      { new: true }
     ).populate("assignees", USER_PROJECTION);
 
     return response.successResponse(res, updatedProject);
