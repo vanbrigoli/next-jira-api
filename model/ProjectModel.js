@@ -19,6 +19,10 @@ projectSchema.pre("save", function(next) {
   next();
 });
 
+projectSchema.pre("update", function() {
+  this.update({}, { $set: { updatedAt: Date.now() } });
+});
+
 const ProjectModel = mongoose.model("Project", projectSchema);
 
 export default ProjectModel;

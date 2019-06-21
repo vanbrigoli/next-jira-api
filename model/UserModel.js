@@ -37,6 +37,10 @@ userSchema.pre("save", function(next) {
   next();
 });
 
+userSchema.pre("update", function() {
+  this.update({}, { $set: { updatedAt: Date.now() } });
+});
+
 // methods
 // generating a hash
 userSchema.methods.generateHash = function(password) {
