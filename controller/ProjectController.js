@@ -69,4 +69,20 @@ const patchProject = async (req, res) => {
   }
 };
 
-export default { postProject, getProjects, patchProject };
+const deleteProject = async (req, res) => {
+  const { projectId } = req.params;
+
+  try {
+    await ProjectModel.findByIdAndDelete(projectId);
+
+    return response.successResponse(res, {
+      message: "Successfully deleted project."
+    });
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in deleting project."
+    });
+  }
+};
+
+export default { postProject, getProjects, patchProject, deleteProject };
