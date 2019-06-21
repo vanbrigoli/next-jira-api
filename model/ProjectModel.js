@@ -4,8 +4,19 @@ export const projectSchema = mongoose.Schema({
   name: { type: String, unique: true },
   description: String,
   assignees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  createdAt: Date,
+  updatedAt: Date
+});
+
+projectSchema.pre("save", function(next) {
+  let project = this;
+
+  project.updatedAt = now;
+  if (!project.createdAt) {
+    project.createdAt = now;
+  }
+
+  next();
 });
 
 const ProjectModel = mongoose.model("Project", projectSchema);
