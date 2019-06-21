@@ -30,7 +30,7 @@ const postUser = async (req, res) => {
       if (err.code && err.code === 11000)
         return response.badRequest(res, { message: "User already exist." });
       else if (err.name && err.name === "ValidationError") {
-        return response.serverErrorResponse(res, {
+        return response.badRequest(res, {
           message: Object.values(err.errors)[0].message
         });
       }
@@ -113,22 +113,28 @@ const patchUser = async (req, res) => {
       });
   }
   try {
-    const updatedUser = await UserModel.findByIdAndUpdate(userId, req.body, {
-      new: true,
-      select: PROJECTION,
-      runValidators: true
-    });
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { _id: userId },
+      req.body,
+      {
+        new: true,
+        select: PROJECTION,
+        runValidators: true
+      }
+    );
 
     return response.successResponse(res, updatedUser);
   } catch (error) {
-    if (error.name && error.name === "ValidationError") {
-      return response.serverErrorResponse(res, {
+    if (error.code && error.code === 11000)
+      return response.badRequest(res, { message: "User already exist." });
+    else if (error.name && error.name === "ValidationError") {
+      return response.badRequest(res, {
         message: Object.values(error.errors)[0].message
       });
-    } else
-      return response.serverErrorResponse(res, {
-        message: "Error in updating user."
-      });
+    } else console.error(error);
+    return response.serverErrorResponse(res, {
+      message: "Error in updating user."
+    });
   }
 };
 

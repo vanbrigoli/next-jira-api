@@ -36,10 +36,9 @@ const postProject = (req, res) => {
 
 const getProjects = async (req, res) => {
   try {
-    const projects = await ProjectModel.find({}).populate(
-      "assignees",
-      USER_PROJECTION
-    );
+    const projects = await ProjectModel.find({}, null, {
+      sort: { createdAt: -1 }
+    }).populate("assignees", USER_PROJECTION);
 
     return response.successResponse(res, projects);
   } catch (error) {
