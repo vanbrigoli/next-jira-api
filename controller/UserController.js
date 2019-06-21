@@ -113,15 +113,11 @@ const patchUser = async (req, res) => {
       });
   }
   try {
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { _id: userId },
-      req.body,
-      {
-        new: true,
-        select: PROJECTION,
-        runValidators: true
-      }
-    );
+    const updatedUser = await UserModel.findByIdAndUpdate(userId, req.body, {
+      new: true,
+      select: PROJECTION,
+      runValidators: true
+    });
 
     return response.successResponse(res, updatedUser);
   } catch (error) {
