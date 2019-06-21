@@ -10,6 +10,7 @@ export const projectSchema = mongoose.Schema({
 
 projectSchema.pre("save", function(next) {
   let project = this;
+  let now = Date.now();
 
   project.updatedAt = now;
   if (!project.createdAt) {
