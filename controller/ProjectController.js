@@ -15,7 +15,6 @@ const postProject = (req, res) => {
 
     project.save(function(err) {
       if (err) {
-        console.error(err);
         if (err.code && err.code === 11000)
           return response.badRequest(res, {
             message: "Project already exist."
@@ -48,4 +47,25 @@ const getProjects = async (req, res) => {
   }
 };
 
-export default { postProject, getProjects };
+const patchProject = async (req, res) => {
+  const { projectId } = req.params;
+
+  try {
+    const updatedProject = await ProjectModel.findByIdAndUpdate(
+      projectId,
+      req.body
+    ).populate("assignees", USER_PROJECTION);
+
+    return response.successResponse(res, updatedProject);
+  } catch (error) {
+    if (err.code && err.code === 11000)
+      return response.badRequest(res, {
+        message: "Project already exist."
+      });
+    return response.serverErrorResponse(res, {
+      message: "Error in updating project."
+    });
+  }
+};
+
+export default { postProject, getProjects, patchProject };

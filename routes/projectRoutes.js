@@ -1,6 +1,7 @@
 import ProjectController from "../controller/ProjectController";
 
 const ProjectRoutes = router => {
+  router.patch("/projects/:projectId", ProjectController.patchProject);
   router.post("/projects", ProjectController.postProject);
   router.get("/projects", ProjectController.getProjects);
 };
