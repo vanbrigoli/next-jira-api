@@ -1,6 +1,7 @@
 // get an instance of mongoose and mongoose.Schema
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import isEmail from "validator/lib/isEmail";
 
 // define the schema for our user model
 export const userSchema = mongoose.Schema({
@@ -8,16 +9,29 @@ export const userSchema = mongoose.Schema({
   lastName: String,
   position: String,
   image: String,
-  email: { type: String, required: true, unique: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: value => {
+      return isEmail(value);
+    }
+  },
   password: { type: String, required: true },
   role: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  createdAt: Date,
+  updatedAt: Date
 });
 
 //middleware
 userSchema.pre("save", function(next) {
   let user = this;
+  let now = Date.now();
+
+  user.updatedAt = now;
+  if (!user.createdAt) {
+    user.createdAt = now;
+  }
 
   user.password = user.generateHash(user.password);
   next();

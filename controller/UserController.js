@@ -29,6 +29,11 @@ const postUser = async (req, res) => {
     if (err) {
       if (err.code && err.code === 11000)
         return response.badRequest(res, { message: "User already exist." });
+      else if (err.name && err.name === "ValidationError") {
+        return response.serverErrorResponse(res, {
+          message: Object.values(err.errors)[0].message
+        });
+      }
       return response.serverErrorResponse(res, {
         message: "Error in saving user."
       });
@@ -110,14 +115,20 @@ const patchUser = async (req, res) => {
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(userId, req.body, {
       new: true,
-      select: PROJECTION
+      select: PROJECTION,
+      runValidators: true
     });
 
     return response.successResponse(res, updatedUser);
   } catch (error) {
-    return response.serverErrorResponse(res, {
-      message: "Error in updating user."
-    });
+    if (error.name && error.name === "ValidationError") {
+      return response.serverErrorResponse(res, {
+        message: Object.values(error.errors)[0].message
+      });
+    } else
+      return response.serverErrorResponse(res, {
+        message: "Error in updating user."
+      });
   }
 };
 
