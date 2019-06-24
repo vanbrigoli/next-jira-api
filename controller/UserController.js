@@ -59,13 +59,26 @@ const postUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
+  const { page = 1, sort = -1, limit = 10 } = req.query;
+
   try {
-    const users = await UserModel.find(
+    const users = await UserModel.paginate(
       { email: { $ne: req.user.email } },
-      PROJECTION
+      {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        sort: { createdAt: parseInt(sort) },
+        select: PROJECTION
+      }
     );
 
-    return response.successResponse(res, { users });
+    return response.successResponse(res, {
+      users: users.docs,
+      page: users.page,
+      total: users.total,
+      limit: users.limit,
+      pages: users.pages
+    });
   } catch (error) {
     return response.serverErrorResponse(res, {
       message: "Error in getting users."
