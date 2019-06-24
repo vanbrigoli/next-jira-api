@@ -12,6 +12,10 @@ const postProject = (req, res) => {
     project.name = name;
     project.description = description;
     project.assignees = assignees;
+    project.slug = name
+      .toLowerCase()
+      .split(" ")
+      .join("_");
 
     project.save(function(err) {
       if (err) {
