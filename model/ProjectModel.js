@@ -4,6 +4,7 @@ export const projectSchema = mongoose.Schema({
   name: { type: String, unique: true },
   description: String,
   assignees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  slug: { type: String, default: null },
   createdAt: Date,
   updatedAt: Date
 });
