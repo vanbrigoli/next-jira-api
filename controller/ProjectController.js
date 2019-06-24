@@ -38,10 +38,17 @@ const postProject = (req, res) => {
 };
 
 const getProjects = async (req, res) => {
+  const { page = 1, sort = -1, limit = 10 } = req.query;
   try {
-    const projects = await ProjectModel.find({}, null, {
-      sort: { createdAt: -1 }
-    }).populate("assignees", USER_PROJECTION);
+    const projects = await ProjectModel.paginate(
+      {},
+      {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        sort: { createdAt: parseInt(sort) },
+        populate: { path: "assignees", select: USER_PROJECTION }
+      }
+    );
 
     return response.successResponse(res, projects);
   } catch (error) {

@@ -2,6 +2,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import isEmail from "validator/lib/isEmail";
+import mongoosePaginate from "mongoose-paginate";
 
 // define the schema for our user model
 export const userSchema = mongoose.Schema({
@@ -51,6 +52,8 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.comparePassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
+
+userSchema.plugin(mongoosePaginate);
 
 // create the model for users and expose it to our app
 const UserModel = mongoose.model("User", userSchema);

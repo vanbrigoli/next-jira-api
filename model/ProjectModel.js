@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate";
 
 export const projectSchema = mongoose.Schema({
   name: { type: String, unique: true },
@@ -24,6 +25,8 @@ projectSchema.pre("save", function(next) {
 projectSchema.pre("update", function() {
   this.update({}, { $set: { updatedAt: Date.now() } });
 });
+
+projectSchema.plugin(mongoosePaginate);
 
 const ProjectModel = mongoose.model("Project", projectSchema);
 
