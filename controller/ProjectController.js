@@ -67,6 +67,13 @@ const getProjects = async (req, res) => {
 const patchProject = async (req, res) => {
   const { projectId } = req.params;
 
+  if ("name" in req.body) {
+    req.body.slug = req.body.name
+      .toLowerCase()
+      .split(" ")
+      .join("_");
+  }
+
   try {
     const updatedProject = await ProjectModel.findByIdAndUpdate(
       projectId,
