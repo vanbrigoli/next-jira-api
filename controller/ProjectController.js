@@ -50,13 +50,7 @@ const getProjects = async (req, res) => {
       }
     );
 
-    return response.successResponse(res, {
-      projects: projects.docs,
-      page: projects.page,
-      total: projects.total,
-      limit: projects.limit,
-      pages: projects.pages
-    });
+    return response.successResponse(res, projects);
   } catch (error) {
     return response.serverErrorResponse(res, {
       message: "Error in getting projects."
