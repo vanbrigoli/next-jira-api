@@ -62,7 +62,7 @@ const getProjects = async (req, res) => {
 const getProject = async (req, res) => {
   const { slug } = req.params;
   try {
-    const project = await ProjectModel.find({ slug }).populate(
+    const project = await ProjectModel.findOne({ slug }).populate(
       "assignees",
       USER_PROJECTION
     );
