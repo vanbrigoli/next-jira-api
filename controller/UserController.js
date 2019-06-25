@@ -43,16 +43,17 @@ const postUser = async (req, res) => {
     delete userObj["password"];
 
     /**
-     * Send email to email
+     * Send email to user email - only if production
      */
-    const mailOptions = {
-      from: '"Custom JIRA Team"<custom-jira@custom.com>',
-      to: user.email,
-      subject: "Custom JIRA Account",
-      html: "<p>Sample email</p>"
-    };
-
-    emailer.sendMail(mailOptions);
+    if (process.env.ENV === "production") {
+      const mailOptions = {
+        from: '"Custom JIRA Team"<custom-jira@custom.com>',
+        to: user.email,
+        subject: "Custom JIRA Account",
+        html: "<p>Sample email</p>"
+      };
+      emailer.sendMail(mailOptions);
+    }
 
     return response.createdResponse(res, userObj);
   });
