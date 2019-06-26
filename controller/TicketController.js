@@ -55,7 +55,7 @@ const getTickets = async (req, res) => {
   let query = {};
   if (projectId && sprintId) {
     query = {
-      $and: { project: { _id: projectId }, sprint: { _id: sprintId } }
+      $and: [{ project: { _id: projectId }, sprint: { _id: sprintId } }]
     };
   }
 
@@ -67,6 +67,7 @@ const getTickets = async (req, res) => {
 
     return response.successResponse(res, tickets);
   } catch (error) {
+    console.error(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting tickets."
     });
