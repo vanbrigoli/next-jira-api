@@ -36,18 +36,19 @@ const getSprint = async (req, res) => {
   }
 };
 const getSprints = async (req, res) => {
-  const { page = 1, sort = -1, limit = 10 } = req.query;
+  const { page = 1, sort = -1, limit = 10, slug } = req.query;
+  let query = {};
+  if (slug) {
+    query = { project: { slug } };
+  }
 
   try {
-    const sprints = await SprintModel.paginate(
-      {},
-      {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        sort: { createdAt: parseInt(sort) },
-        populate: { path: "project" }
-      }
-    );
+    const sprints = await SprintModel.paginate(query, {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      sort: { createdAt: parseInt(sort) },
+      populate: { path: "project" }
+    });
 
     return response.successResponse(res, sprints);
   } catch (error) {
