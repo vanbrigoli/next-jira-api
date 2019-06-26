@@ -67,7 +67,6 @@ const getTickets = async (req, res) => {
 
     return response.successResponse(res, tickets);
   } catch (error) {
-    console.error(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting tickets."
     });
