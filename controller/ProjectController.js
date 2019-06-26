@@ -7,34 +7,28 @@ const USER_PROJECTION =
 const postProject = (req, res) => {
   const { name, description, assignees } = req.body;
 
-  try {
-    const project = new ProjectModel();
-    project.name = name;
-    project.description = description;
-    project.assignees = assignees;
-    project.slug = name
-      .toLowerCase()
-      .split(" ")
-      .join("_");
+  const project = new ProjectModel();
+  project.name = name;
+  project.description = description;
+  project.assignees = assignees;
+  project.slug = name
+    .toLowerCase()
+    .split(" ")
+    .join("_");
 
-    project.save(function(err) {
-      if (err) {
-        if (err.code && err.code === 11000)
-          return response.badRequest(res, {
-            message: "Project already exist."
-          });
-        return response.serverErrorResponse(res, {
-          message: "Error in saving project."
+  project.save(function(err) {
+    if (err) {
+      if (err.code && err.code === 11000)
+        return response.badRequest(res, {
+          message: "Project already exist."
         });
-      }
+      return response.serverErrorResponse(res, {
+        message: "Error in saving project."
+      });
+    }
 
-      return response.createdResponse(res, project);
-    });
-  } catch (error) {
-    return response.serverErrorResponse(res, {
-      message: "Error in finding user."
-    });
-  }
+    return response.createdResponse(res, project);
+  });
 };
 
 const getProjects = async (req, res) => {

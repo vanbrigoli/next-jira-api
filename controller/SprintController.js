@@ -36,7 +36,7 @@ const getSprint = async (req, res) => {
   }
 };
 const getSprints = async (req, res) => {
-  const { page = 1, sort = -1, limit = 10, projectId } = req.query;
+  const { page = 1, sort = -1, limit = 100, projectId } = req.query;
   let query = {};
   if (projectId) {
     query = { project: { _id: projectId } };
@@ -67,7 +67,7 @@ const patchSprint = async (req, res) => {
       {
         new: true
       }
-    );
+    ).populate("project");
 
     return response.successResponse(res, updatedSprint);
   } catch (error) {
