@@ -52,7 +52,6 @@ const getSprints = async (req, res) => {
 
     return response.successResponse(res, sprints);
   } catch (error) {
-    console.error(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting sprints."
     });
