@@ -36,10 +36,10 @@ const getSprint = async (req, res) => {
   }
 };
 const getSprints = async (req, res) => {
-  const { page = 1, sort = -1, limit = 10, slug } = req.query;
+  const { page = 1, sort = -1, limit = 10, projectId } = req.query;
   let query = {};
-  if (slug) {
-    query = { project: { slug } };
+  if (projectId) {
+    query = { project: { _id: projectId } };
   }
 
   try {
@@ -52,6 +52,7 @@ const getSprints = async (req, res) => {
 
     return response.successResponse(res, sprints);
   } catch (error) {
+    console.error(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting sprints."
     });
