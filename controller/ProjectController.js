@@ -1,20 +1,23 @@
 import * as response from "../utils/commonResponse";
 import ProjectModel from "../model/ProjectModel";
 
-const USER_PROJECTION =
-  "email role firstName lastName position image createdAt updatedAt";
+function sluggify(projectName) {
+  return projectName
+    .toLowerCase()
+    .split(" ")
+    .join("_");
+}
+
+const USER_PROJECTION = "email role firstName lastName position image";
 
 const postProject = (req, res) => {
   const { name, description, assignees } = req.body;
 
-  const project = new ProjectModel();
-  project.name = name;
-  project.description = description;
-  project.assignees = assignees;
-  project.slug = name
-    .toLowerCase()
-    .split(" ")
-    .join("_");
+  const project = new ProjectModel({
+    name: sluggify(name),
+    description,
+    assignees
+  });
 
   project.save(function(err) {
     if (err) {
@@ -54,12 +57,11 @@ const getProjects = async (req, res) => {
 };
 
 const getProject = async (req, res) => {
-  const { slug } = req.params;
+  const { projectId } = req.params;
   try {
-    const project = await ProjectModel.findOne({ slug }).populate(
-      "assignees",
-      USER_PROJECTION
-    );
+    const project = await ProjectModel.findOne({
+      $or: [{ slug: projectId }, { _id: projectId }]
+    }).populate("assignees", USER_PROJECTION);
 
     return response.successResponse(res, project);
   } catch (error) {
@@ -73,10 +75,7 @@ const patchProject = async (req, res) => {
   const { projectId } = req.params;
 
   if ("name" in req.body) {
-    req.body.slug = req.body.name
-      .toLowerCase()
-      .split(" ")
-      .join("_");
+    req.body.slug = sluggify(req.body.name);
   }
 
   try {

@@ -4,6 +4,7 @@ import mongoosePaginate from "mongoose-paginate";
 export const projectSchema = mongoose.Schema({
   name: { type: String, unique: true },
   description: String,
+  sprints: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sprint" }],
   assignees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   slug: { type: String, default: null },
   createdAt: Date,

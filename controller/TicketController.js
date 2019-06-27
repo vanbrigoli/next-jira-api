@@ -6,21 +6,12 @@ const USER_PROJECTION =
   "email role firstName lastName position image createdAt updatedAt";
 
 const postTicket = (req, res) => {
-  const {
-    projectId,
-    sprintId,
-    title,
-    description,
-    type,
-    assignedTo
-  } = req.body;
+  const { sprintId, title, description, type, assignedTo } = req.body;
 
   const newTicket = new TicketModel();
 
   newTicket.title = title;
   newTicket.description = description;
-  newTicket.projectId = projectId;
-  newTicket.sprintId = sprintId;
   newTicket.assignedTo = assignedTo;
   newTicket.type = type;
   newTicket.status = "pending";
@@ -34,7 +25,7 @@ const postTicket = (req, res) => {
 
     try {
       const sprint = await SprintModel.findByIdAndUpdate(
-        newTicket.sprintId,
+        sprintId,
         {
           $push: { pending: newTicket._id }
         },
@@ -56,10 +47,10 @@ const getTicket = async (req, res) => {
   const { ticketId } = req.params;
 
   try {
-    const ticket = await TicketModel.findById(ticketId)
-      .populate("projectId")
-      .populate("sprintId")
-      .populate("assignedTo", USER_PROJECTION);
+    const ticket = await TicketModel.findById(ticketId).populate(
+      "assignedTo",
+      USER_PROJECTION
+    );
 
     return response.successResponse(res, ticket);
   } catch (error) {
@@ -80,10 +71,7 @@ const getTickets = async (req, res) => {
   try {
     const tickets = await TicketModel.find(query, null, {
       sort: { createdAt: -1 }
-    })
-      .populate("projectId")
-      .populate("sprintId")
-      .populate("assignedTo", USER_PROJECTION);
+    }).populate("assignedTo", USER_PROJECTION);
 
     return response.successResponse(res, tickets);
   } catch (error) {
@@ -103,10 +91,7 @@ const patchTicket = async (req, res) => {
       {
         new: true
       }
-    )
-      .populate("projectId")
-      .populate("sprintId")
-      .populate("assignedTo", USER_PROJECTION);
+    ).populate("assignedTo", USER_PROJECTION);
 
     return response.successResponse(res, updatedTicket);
   } catch (error) {
