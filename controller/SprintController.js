@@ -7,7 +7,7 @@ const postSprint = (req, res) => {
   const newSprint = SprintModel();
 
   newSprint.name = name;
-  newSprint.project = projectId;
+  newSprint.projectId = projectId;
 
   newSprint.save(err => {
     if (err) {
@@ -39,7 +39,7 @@ const getSprints = async (req, res) => {
   const { page = 1, sort = -1, limit = 100, projectId } = req.query;
   let query = {};
   if (projectId) {
-    query = { project: { _id: projectId } };
+    query = { projectId: { _id: projectId } };
   }
 
   try {

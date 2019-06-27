@@ -4,7 +4,7 @@ import mongoosePaginate from "mongoose-paginate";
 const sprintSchema = mongoose.Schema({
   name: { type: String, unique: true },
   description: String,
-  project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+  projectId: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
