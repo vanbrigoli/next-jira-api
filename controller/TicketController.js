@@ -60,13 +60,16 @@ const getTickets = async (req, res) => {
   }
 
   try {
-    const tickets = await TicketModel.find(query)
+    const tickets = await TicketModel.find(query, null, {
+      sort: { createdAt: -1 }
+    })
       .populate("project")
       .populate("sprint")
       .populate("assignedTo", USER_PROJECTION);
 
     return response.successResponse(res, tickets);
   } catch (error) {
+    console.error(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting tickets."
     });
