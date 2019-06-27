@@ -26,7 +26,7 @@ const postSprint = (req, res) => {
 const getSprint = async (req, res) => {
   const { sprintId } = req.params;
   try {
-    const sprint = await SprintModel.findById(sprintId).populate("project");
+    const sprint = await SprintModel.findById(sprintId).populate("projectId");
 
     return response.successResponse(res, sprint);
   } catch (error) {
@@ -47,7 +47,7 @@ const getSprints = async (req, res) => {
       page: parseInt(page),
       limit: parseInt(limit),
       sort: { createdAt: parseInt(sort) },
-      populate: { path: "project" }
+      populate: { path: "projectId" }
     });
 
     return response.successResponse(res, sprints);
@@ -67,7 +67,7 @@ const patchSprint = async (req, res) => {
       {
         new: true
       }
-    ).populate("project");
+    ).populate("projectId");
 
     return response.successResponse(res, updatedSprint);
   } catch (error) {

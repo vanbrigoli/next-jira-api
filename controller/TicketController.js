@@ -39,8 +39,8 @@ const getTicket = async (req, res) => {
 
   try {
     const ticket = await TicketModel.findById(ticketId)
-      .populate("project")
-      .populate("sprint")
+      .populate("projectId")
+      .populate("sprintId")
       .populate("assignedTo", USER_PROJECTION);
 
     return response.successResponse(res, ticket);
@@ -63,8 +63,8 @@ const getTickets = async (req, res) => {
     const tickets = await TicketModel.find(query, null, {
       sort: { createdAt: -1 }
     })
-      .populate("project")
-      .populate("sprint")
+      .populate("projectId")
+      .populate("sprintId")
       .populate("assignedTo", USER_PROJECTION);
 
     return response.successResponse(res, tickets);
@@ -86,8 +86,8 @@ const patchTicket = async (req, res) => {
         new: true
       }
     )
-      .populate("project")
-      .populate("sprint")
+      .populate("projectId")
+      .populate("sprintId")
       .populate("assignedTo", USER_PROJECTION);
 
     return response.successResponse(res, updatedTicket);
