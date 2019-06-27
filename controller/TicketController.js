@@ -79,7 +79,7 @@ const patchTicket = async (req, res) => {
   const { ticketId } = req.params;
 
   try {
-    const updatedTicket = await SprintModel.findByIdAndUpdate(
+    const updatedTicket = await TicketModel.findByIdAndUpdate(
       ticketId,
       req.body,
       {
@@ -98,7 +98,7 @@ const patchTicket = async (req, res) => {
         message: "Sprint already exist."
       });
     return response.serverErrorResponse(res, {
-      message: "Error in updating sprint."
+      message: "Error in updating ticket."
     });
   }
 };
