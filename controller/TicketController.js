@@ -1,5 +1,6 @@
 import * as response from "../utils/commonResponse";
 import TicketModel from "../model/TicketModel";
+import SprintModel from "../model/SprintModel";
 
 const USER_PROJECTION =
   "email role firstName lastName position image createdAt updatedAt";
@@ -24,14 +25,31 @@ const postTicket = (req, res) => {
   newTicket.type = type;
   newTicket.status = "pending";
 
-  newTicket.save(err => {
+  newTicket.save(async err => {
     if (err) {
       return response.serverErrorResponse(res, {
         message: "Error in saving ticket."
       });
     }
 
-    return response.createdResponse(res, newTicket);
+    try {
+      const sprint = await SprintModel.findByIdAndUpdate(
+        newTicket.sprintId,
+        {
+          $push: { pending: newTicket._id }
+        },
+        { new: true }
+      )
+        .populate("pending")
+        .populate("ongoing")
+        .populate("complete");
+
+      return response.createdResponse(res, sprint);
+    } catch (error) {
+      return response.serverErrorResponse(res, {
+        message: "Error in updating sprint."
+      });
+    }
   });
 };
 const getTicket = async (req, res) => {

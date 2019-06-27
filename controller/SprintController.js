@@ -27,7 +27,6 @@ const getSprint = async (req, res) => {
   const { sprintId } = req.params;
   try {
     const sprint = await SprintModel.findById(sprintId)
-      .populate("projectId")
       .populate("pending")
       .populate("ongoing")
       .populate("complete");
@@ -52,7 +51,6 @@ const getSprints = async (req, res) => {
       limit: parseInt(limit),
       sort: { createdAt: parseInt(sort) },
       populate: {
-        path: "projectId",
         path: "pending",
         path: "ongoing",
         path: "complete"
@@ -77,7 +75,6 @@ const patchSprint = async (req, res) => {
         new: true
       }
     )
-      .populate("projectId")
       .populate("pending")
       .populate("ongoing")
       .populate("complete");
