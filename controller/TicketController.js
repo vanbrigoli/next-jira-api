@@ -18,11 +18,11 @@ const postTicket = (req, res) => {
 
   newTicket.title = title;
   newTicket.description = description;
-  newTicket.project = projectId;
-  newTicket.sprint = sprintId;
+  newTicket.projectId = projectId;
+  newTicket.sprintId = sprintId;
   newTicket.assignedTo = assignedTo;
   newTicket.type = type;
-  newTicket.status = "PENDING";
+  newTicket.status = "pending";
 
   newTicket.save(err => {
     if (err) {
@@ -55,7 +55,7 @@ const getTickets = async (req, res) => {
   let query = {};
   if (projectId && sprintId) {
     query = {
-      $and: [{ project: { _id: projectId }, sprint: { _id: sprintId } }]
+      $and: [{ projectId: { _id: projectId }, sprintId: { _id: sprintId } }]
     };
   }
 

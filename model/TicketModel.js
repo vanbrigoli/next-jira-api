@@ -3,12 +3,12 @@ import mongoosePaginate from "mongoose-paginate";
 
 const ticketSchema = mongoose.Schema({
   description: String,
-  sprint: { type: mongoose.Schema.Types.ObjectId, ref: "Sprint" },
+  sprintId: { type: mongoose.Schema.Types.ObjectId, ref: "Sprint" },
   title: String,
-  project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
+  projectId: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  type: { type: String, enum: ["TASK", "DEFECT", "BUG", "TECH DEBT"] },
-  status: { type: String, enum: ["PENDING", "ONGOING", "COMPLETE"] },
+  type: { type: String, enum: ["task", "defect", "bug", "tech debt"] },
+  status: { type: String, enum: ["pending", "ongoing", "complete"] },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
