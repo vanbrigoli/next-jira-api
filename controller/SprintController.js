@@ -19,9 +19,13 @@ const postSprint = (req, res) => {
     }
 
     try {
-      const project = await ProjectModel.findByIdAndUpdate(projectId, {
-        $push: { sprints: newSprint._id }
-      }).populate("sprints");
+      const project = await ProjectModel.findByIdAndUpdate(
+        projectId,
+        {
+          $push: { sprints: newSprint._id }
+        },
+        { new: true }
+      ).populate("sprints");
 
       return response.createdResponse(res, project);
     } catch (error) {
