@@ -20,8 +20,6 @@ const postProject = (req, res) => {
     assignees
   });
 
-  console.log(project.name);
-
   project.save(function(err) {
     if (err) {
       console.log(err);
@@ -67,10 +65,18 @@ const getProject = async (req, res) => {
   try {
     const project = await ProjectModel.findOne({ slug: projectId })
       .populate("assignees", USER_PROJECTION)
-      .populate("sprints")
-      .populate("sprints.pending")
-      .populate("sprints.ongoing")
-      .populate("sprints.complete");
+      .populate({
+        path: "sprints",
+        populate: { path: "pending" }
+      })
+      .populate({
+        path: "sprints",
+        populate: { path: "ongoing" }
+      })
+      .populate({
+        path: "sprints",
+        populate: { path: "complete" }
+      });
 
     return response.successResponse(res, project);
   } catch (error) {
