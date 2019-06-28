@@ -62,10 +62,9 @@ const getProject = async (req, res) => {
   const { projectId } = req.params;
 
   try {
-    const project = await ProjectModel.findOne({ slug: projectId }).populate(
-      "assignees",
-      USER_PROJECTION
-    );
+    const project = await ProjectModel.findOne({ slug: projectId })
+      .populate("assignees", USER_PROJECTION)
+      .populate("sprints");
 
     return response.successResponse(res, project);
   } catch (error) {
@@ -88,7 +87,9 @@ const patchProject = async (req, res) => {
       projectId,
       req.body,
       { new: true }
-    ).populate("assignees", USER_PROJECTION);
+    )
+      .populate("assignees", USER_PROJECTION)
+      .populate("sprints");
 
     return response.successResponse(res, updatedProject);
   } catch (error) {
