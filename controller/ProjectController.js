@@ -21,6 +21,7 @@ const postProject = (req, res) => {
 
   project.save(function(err) {
     if (err) {
+      console.log(err);
       if (err.code && err.code === 11000)
         return response.badRequest(res, {
           message: "Project already exist."
@@ -50,6 +51,7 @@ const getProjects = async (req, res) => {
 
     return response.successResponse(res, projects);
   } catch (error) {
+    console.log(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting projects."
     });
@@ -90,6 +92,7 @@ const patchProject = async (req, res) => {
 
     return response.successResponse(res, updatedProject);
   } catch (error) {
+    console.log(error);
     if (error.code && error.code === 11000)
       return response.badRequest(res, {
         message: "Project already exist."
@@ -110,6 +113,7 @@ const deleteProject = async (req, res) => {
       message: "Successfully deleted project."
     });
   } catch (error) {
+    console.log(error);
     return response.serverErrorResponse(res, {
       message: "Error in deleting project."
     });
