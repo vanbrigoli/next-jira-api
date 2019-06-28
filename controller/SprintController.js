@@ -3,9 +3,7 @@ import SprintModel from "../model/SprintModel";
 import ProjectModel from "../model/ProjectModel";
 
 const postSprint = (req, res) => {
-  const { name, description, projectId } = req.body;
-
-  const newSprint = SprintModel({ name, description });
+  const newSprint = SprintModel(req.body);
 
   newSprint.save(async err => {
     if (err) {
@@ -20,7 +18,7 @@ const postSprint = (req, res) => {
 
     try {
       const project = await ProjectModel.findByIdAndUpdate(
-        projectId,
+        req.body.projectId,
         {
           $push: { sprints: newSprint._id }
         },

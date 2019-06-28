@@ -2,19 +2,10 @@ import * as response from "../utils/commonResponse";
 import TicketModel from "../model/TicketModel";
 import SprintModel from "../model/SprintModel";
 
-const USER_PROJECTION =
-  "email role firstName lastName position image createdAt updatedAt";
+const USER_PROJECTION = "email role firstName lastName position image";
 
 const postTicket = (req, res) => {
-  const { sprintId, title, description, type, assignedTo } = req.body;
-
-  const newTicket = new TicketModel();
-
-  newTicket.title = title;
-  newTicket.description = description;
-  newTicket.assignedTo = assignedTo;
-  newTicket.type = type;
-  newTicket.status = "pending";
+  const newTicket = new TicketModel(req.body);
 
   newTicket.save(async err => {
     if (err) {
@@ -25,7 +16,7 @@ const postTicket = (req, res) => {
 
     try {
       const sprint = await SprintModel.findByIdAndUpdate(
-        sprintId,
+        req.body.sprintId,
         {
           $push: { pending: newTicket._id }
         },

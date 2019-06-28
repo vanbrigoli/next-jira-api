@@ -4,6 +4,7 @@ import mongoosePaginate from "mongoose-paginate";
 const sprintSchema = mongoose.Schema({
   name: { type: String, unique: true },
   description: String,
+  projectId: String,
   pending: [{ type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }],
   ongoing: [{ type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }],
   complete: [{ type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }],
