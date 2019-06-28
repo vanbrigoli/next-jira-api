@@ -1,15 +1,13 @@
 import * as response from "../utils/commonResponse";
 import SprintModel from "../model/SprintModel";
+import ProjectModel from "../model/ProjectModel";
 
 const postSprint = (req, res) => {
-  const { name, projectId } = req.body;
+  const { name, description, projectId } = req.body;
 
-  const newSprint = SprintModel();
+  const newSprint = SprintModel({ name, description });
 
-  newSprint.name = name;
-  newSprint.projectId = projectId;
-
-  newSprint.save(err => {
+  newSprint.save(async err => {
     if (err) {
       if (err.code && err.code === 11000)
         return response.badRequest(res, {
@@ -20,7 +18,17 @@ const postSprint = (req, res) => {
       });
     }
 
-    return response.createdResponse(res, newSprint);
+    try {
+      const project = await ProjectModel.findByIdAndUpdate(projectId, {
+        $push: { sprints: newSprint._id }
+      }).populate("sprints");
+
+      return response.createdResponse(res, project);
+    } catch (error) {
+      return response.serverErrorResponse(res, {
+        message: "Error in finding and updating project."
+      });
+    }
   });
 };
 const getSprint = async (req, res) => {
