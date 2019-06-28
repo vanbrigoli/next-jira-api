@@ -58,13 +58,16 @@ const getProjects = async (req, res) => {
 
 const getProject = async (req, res) => {
   const { projectId } = req.params;
+
   try {
-    const project = await ProjectModel.findOne({
-      $or: [{ slug: projectId }, { _id: projectId }]
-    }).populate("assignees", USER_PROJECTION);
+    const project = await ProjectModel.findOne({ slug: projectId }).populate(
+      "assignees",
+      USER_PROJECTION
+    );
 
     return response.successResponse(res, project);
   } catch (error) {
+    console.log(error);
     return response.serverErrorResponse(res, {
       message: "Error in getting project."
     });
