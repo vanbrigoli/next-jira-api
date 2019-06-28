@@ -64,7 +64,10 @@ const getProject = async (req, res) => {
   try {
     const project = await ProjectModel.findOne({ slug: projectId })
       .populate("assignees", USER_PROJECTION)
-      .populate("sprints");
+      .populate("sprints")
+      .populate("sprints.pending")
+      .populate("sprints.ongoing")
+      .populate("sprints.complete");
 
     return response.successResponse(res, project);
   } catch (error) {
