@@ -14,10 +14,13 @@ const postProject = (req, res) => {
   const { name, description, assignees } = req.body;
 
   const project = new ProjectModel({
-    name: sluggify(name),
+    name,
     description,
+    slug: sluggify(name),
     assignees
   });
+
+  console.log(project.name);
 
   project.save(function(err) {
     if (err) {
