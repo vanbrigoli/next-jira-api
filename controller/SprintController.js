@@ -24,7 +24,19 @@ const postSprint = (req, res) => {
           $push: { sprints: newSprint._id }
         },
         { new: true }
-      ).populate("sprints");
+      )
+        .populate({
+          path: "sprints",
+          populate: { path: "pending" }
+        })
+        .populate({
+          path: "sprints",
+          populate: { path: "ongoing" }
+        })
+        .populate({
+          path: "sprints",
+          populate: { path: "complete" }
+        });
 
       return response.createdResponse(res, project);
     } catch (error) {
