@@ -1,6 +1,7 @@
 import * as response from "../utils/commonResponse";
 import SprintModel from "../model/SprintModel";
 import ProjectModel from "../model/ProjectModel";
+import TicketModel from "../model/TicketModel";
 
 const postSprint = (req, res) => {
   const newSprint = SprintModel(req.body);
@@ -76,18 +77,51 @@ const getSprints = async (req, res) => {
 };
 const patchSprint = async (req, res) => {
   const { sprintId } = req.params;
+  const { pending, ongoing, complete } = req.body;
+  let pendingIds = [],
+    ongoingIds = [],
+    completeIds = [];
+
+  if (pending.length) {
+    pendingIds = pending.map(async p => {
+      await TicketModel.findByIdAndUpdate(p._id, p);
+      return p._id;
+    });
+  }
+  if (ongoing.length) {
+    ongoingIds = ongoing.map(async p => {
+      await TicketModel.findByIdAndUpdate(p._id, p);
+      return p._id;
+    });
+  }
+  if (complete.length) {
+    completeIds = complete.map(async p => {
+      await TicketModel.findByIdAndUpdate(p._id, p);
+      return p._id;
+    });
+  }
+
+  const resolvePending = await Promise.all(pendingIds);
+  const resolveOngoing = await Promise.all(ongoingIds);
+  const resolveComplete = await Promise.all(completeIds);
+
+  const requestBody = Object.assign({}, req.body, {
+    pending: resolvePending,
+    ongoing: resolveOngoing,
+    complete: resolveComplete
+  });
 
   try {
     const updatedSprint = await SprintModel.findByIdAndUpdate(
       sprintId,
-      req.body,
+      requestBody,
       {
         new: true
       }
     )
-      .populate("pending")
-      .populate("ongoing")
-      .populate("complete");
+      .populate({ path: "pending", populate: "assignedTo" })
+      .populate({ path: "ongoing", populate: "assignedTo" })
+      .populate({ path: "complete", populate: "assignedTo" });
 
     return response.successResponse(res, updatedSprint);
   } catch (error) {
