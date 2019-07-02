@@ -119,9 +119,9 @@ const patchSprint = async (req, res) => {
         new: true
       }
     )
-      .populate({ path: "pending", populate: "assignedTo" })
-      .populate({ path: "ongoing", populate: "assignedTo" })
-      .populate({ path: "complete", populate: "assignedTo" });
+      .populate("pending")
+      .populate("ongoing")
+      .populate("complete");
 
     return response.successResponse(res, updatedSprint);
   } catch (error) {
