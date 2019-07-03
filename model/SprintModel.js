@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate";
 
 const sprintSchema = mongoose.Schema({
-  name: { type: String, unique: true },
+  name: String,
   description: String,
   projectId: String,
   pending: [{ type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }],

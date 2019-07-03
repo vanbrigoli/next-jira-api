@@ -3,15 +3,27 @@ import SprintModel from "../model/SprintModel";
 import ProjectModel from "../model/ProjectModel";
 import TicketModel from "../model/TicketModel";
 
-const postSprint = (req, res) => {
+const postSprint = async (req, res) => {
+  try {
+    const sprint = await SprintModel.findOne({
+      $and: [{ name: req.body.name }, { projectId: req.body.projectId }]
+    });
+
+    if (sprint) {
+      return response.badRequest(res, {
+        message: "Sprint already exist."
+      });
+    }
+  } catch (error) {
+    return response.serverErrorResponse(res, {
+      message: "Error in finding sprint."
+    });
+  }
   const newSprint = SprintModel(req.body);
 
   newSprint.save(async err => {
     if (err) {
-      if (err.code && err.code === 11000)
-        return response.badRequest(res, {
-          message: "Sprint already exist."
-        });
+      console.error(err);
       return response.serverErrorResponse(res, {
         message: "Error in saving sprint."
       });
