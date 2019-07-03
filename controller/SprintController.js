@@ -4,6 +4,7 @@ import ProjectModel from "../model/ProjectModel";
 import TicketModel from "../model/TicketModel";
 
 const postSprint = async (req, res) => {
+  // Check first if sprint exists in project
   try {
     const sprint = await SprintModel.findOne({
       $and: [{ name: req.body.name }, { projectId: req.body.projectId }]
@@ -19,6 +20,7 @@ const postSprint = async (req, res) => {
       message: "Error in finding sprint."
     });
   }
+  // Start saving sprint
   const newSprint = SprintModel(req.body);
 
   newSprint.save(async err => {
@@ -100,6 +102,25 @@ const getSprints = async (req, res) => {
   }
 };
 const patchSprint = async (req, res) => {
+  // Check first if sprint exists in project
+  if ("name" in req.body) {
+    try {
+      const sprint = await SprintModel.findOne({
+        $and: [{ name: req.body.name }, { projectId: req.body.projectId }]
+      });
+
+      if (sprint) {
+        return response.badRequest(res, {
+          message: "Sprint already exist."
+        });
+      }
+    } catch (error) {
+      return response.serverErrorResponse(res, {
+        message: "Error in finding sprint."
+      });
+    }
+  }
+  // Start project and sprint update
   const { sprintId } = req.params;
   const { pending, ongoing, complete } = req.body;
   let pendingIds = [],
