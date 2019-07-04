@@ -4,7 +4,6 @@ import express from "express";
 import cors from "cors";
 
 import setAdmin from "./utils/setAdmin";
-import populateSlug from "./seeders/popupateSlug";
 
 /**
  * Connect to mongoDB
@@ -19,10 +18,9 @@ mongoose
   .then(() => {
     console.log("Successfully connected to DB.");
     setAdmin();
-    populateSlug();
   })
   .catch(error => {
-    console.error("Connection error.");
+    console.error("Connection error. ", error);
   });
 
 /**
