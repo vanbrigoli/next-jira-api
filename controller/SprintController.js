@@ -164,6 +164,9 @@ const patchSprint = async (req, res) => {
     ongoing: resolveOngoing,
     complete: resolveComplete
   });
+  if ("name" in requestBody) {
+    requestBody.slug = sluggify(requestBody.name);
+  }
 
   try {
     const updatedSprint = await SprintModel.findByIdAndUpdate(
