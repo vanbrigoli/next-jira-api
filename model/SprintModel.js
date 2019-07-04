@@ -5,6 +5,7 @@ const sprintSchema = mongoose.Schema({
   name: String,
   description: String,
   projectId: String,
+  slug: String,
   pending: [{ type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }],
   ongoing: [{ type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }],
   complete: [{ type: mongoose.Schema.Types.ObjectId, ref: "Ticket" }],

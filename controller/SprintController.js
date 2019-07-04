@@ -3,6 +3,13 @@ import SprintModel from "../model/SprintModel";
 import ProjectModel from "../model/ProjectModel";
 import TicketModel from "../model/TicketModel";
 
+function sluggify(projectName) {
+  return projectName
+    .toLowerCase()
+    .split(" ")
+    .join("_");
+}
+
 const postSprint = async (req, res) => {
   // Check first if sprint exists in project
   try {
@@ -21,7 +28,9 @@ const postSprint = async (req, res) => {
     });
   }
   // Start saving sprint
-  const newSprint = SprintModel(req.body);
+  const newSprint = SprintModel(
+    Object.assign({}, req.body, { slug: sluggify(req.body.name) })
+  );
 
   newSprint.save(async err => {
     if (err) {
